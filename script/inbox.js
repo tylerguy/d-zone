@@ -23,13 +23,6 @@ function Inbox(config) {
   });
   this.bot = bot;
   var self = this;
-  function setPresence() {
-    bot.editStatus(null, {
-      name: config.get("infoCommand"),
-      url: config.get("url"),
-      type: 0,
-    });
-  }
   function respond(channel) {
     if (Date.now() - (commandCooldowns[channel.id] || 0) < 30 * 1000) return;
     commandCooldowns[channel.id] = Date.now();
@@ -75,8 +68,6 @@ function Inbox(config) {
     }
     console.log("Connected to", self.servers.size, "server(s)");
     self.emit("connected");
-    setInterval(setPresence, 60 * 1000);
-    setPresence();
     bot.on(
       "messageCreate",
       ({ author, member, channel, cleanContent: message }) => {
